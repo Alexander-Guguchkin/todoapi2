@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Contracts;
-use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use Illuminate\Http\JsonResponse;
 interface InterfaceTask
 {
-    public function createTask(TaskRequest $request);
+    public function createTask($validated);
     public function getTasks();
     public function getLastTask();
-    public function editTask(TaskRequest $request, Task $id);
+    public function editTask(Task $id);
     public function deleteTask(Task $id);
     public function completeTask( Task $id);
 }

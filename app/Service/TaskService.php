@@ -2,7 +2,6 @@
 
 namespace App\Service;
 use App\Models\Task;
-use App\Http\Requests\TaskRequest;
 use Illuminate\Http\JsonResponse;
 use App\Contracts\InterfaceTask;
 
@@ -15,24 +14,24 @@ class TaskService implements InterfaceTask
     {
         //
     }
-    public function createTask(TaskRequest $request)
+    public function createTask($validated)  
     {
-        $validated = $request->validated();
-        Task::create($validated);
+        $task = Task::create($validated);
+        return $task;
     }
-    public function getTasks(): JsonResponse{
+    public function getTasks(){
         $tasks = Task::all();
         return response()->json([
             'tasks' => $tasks
         ]);
     }
-    public function getLastTask(): JsonResponse{
+    public function getLastTask(){
         $task = Task::latest()->first();
         return response()->json([
             'task' => $task
         ]);
     }
-    public function editTask(TaskRequest $request, Task $id)
+    public function editTask( Task $id)
     {
         $validated = $request->validated();
         $id->update($validated);

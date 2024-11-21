@@ -1,14 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateTaskRequest;
+use Illuminate\Http\JsonResponse;
+use App\Service\TaskService;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     public function index()
     {
         //
@@ -17,9 +25,14 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+    public function create(CreateTaskRequest $request):JsonResponse
+    {   
+        $validated = $request->validated();
+        $result = $this->taskService->createTask($validated);
+        return response()->json([
+            'message' => 'Task created succesfully',
+            'task' => $result,
+        ], 201);
     }
 
     /**
